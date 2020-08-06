@@ -2,19 +2,22 @@ package in.anees.dependencyinjectionexample;
 
 import android.app.Application;
 
-import in.anees.dependencyinjectionexample.common.dependencyinjection.CompositionRoot;
+import in.anees.dependencyinjectionexample.common.dependencyinjection.application.ApplicationComponent;
+import in.anees.dependencyinjectionexample.common.dependencyinjection.application.ApplicationModule;
+import in.anees.dependencyinjectionexample.common.dependencyinjection.application.DaggerApplicationComponent;
 
 public class MyApplication extends Application {
 
-    private CompositionRoot mCompositionRoot;
+    private ApplicationComponent mApplicationComponent;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        mCompositionRoot = new CompositionRoot();
+        mApplicationComponent = DaggerApplicationComponent.builder()
+                .applicationModule(new ApplicationModule(this)).build();
     }
 
-    public CompositionRoot getCompositionRoot() {
-        return mCompositionRoot;
+    public ApplicationComponent getApplicationComponent() {
+        return mApplicationComponent;
     }
 }

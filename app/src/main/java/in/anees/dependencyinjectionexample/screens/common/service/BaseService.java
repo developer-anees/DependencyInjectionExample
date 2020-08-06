@@ -1,25 +1,24 @@
-package in.anees.dependencyinjectionexample.screens.common.activities;
+package in.anees.dependencyinjectionexample.screens.common.service;
 
+import android.app.Service;
 
 import androidx.annotation.UiThread;
-import androidx.appcompat.app.AppCompatActivity;
 
 import in.anees.dependencyinjectionexample.MyApplication;
 import in.anees.dependencyinjectionexample.common.dependencyinjection.application.ApplicationComponent;
-import in.anees.dependencyinjectionexample.common.dependencyinjection.presentation.PresentationComponent;
-import in.anees.dependencyinjectionexample.common.dependencyinjection.presentation.PresentationModule;
+import in.anees.dependencyinjectionexample.common.dependencyinjection.service.ServiceComponent;
+import in.anees.dependencyinjectionexample.common.dependencyinjection.service.ServiceModule;
 
-public class BaseActivity extends AppCompatActivity {
-
+public abstract class BaseService extends Service {
     private boolean mIsInjectorUsed;
 
     @UiThread
-    protected PresentationComponent getInjector() {
+    protected ServiceComponent getInjector() {
         if (mIsInjectorUsed) {
             throw new RuntimeException("There is no need to use injector more than once");
         }
         mIsInjectorUsed = true;
-        return getApplicationComponent().newPresentationComponent(new PresentationModule(this));
+        return getApplicationComponent().newServiceComponent(new ServiceModule(this));
     }
 
     private ApplicationComponent getApplicationComponent() {

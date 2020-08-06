@@ -2,7 +2,9 @@
 
  import android.os.Bundle;
  import java.util.List;
- import in.anees.dependencyinjectionexample.common.dependencyinjection.Service;
+
+ import javax.inject.Inject;
+
  import in.anees.dependencyinjectionexample.questions.FetchQuestionsListUseCase;
  import in.anees.dependencyinjectionexample.questions.Question;
  import in.anees.dependencyinjectionexample.screens.common.activities.BaseActivity;
@@ -16,12 +18,12 @@
 
      private static final int NUM_OF_QUESTIONS_TO_FETCH = 20;
 
-     @Service
-     private FetchQuestionsListUseCase mFetchQuestionsListUseCase;
-     @Service
-     private DialogsManager mDialogsManager;
-     @Service
-     private ViewMvcFactory mViewMvcFactory;
+     @Inject
+     FetchQuestionsListUseCase mFetchQuestionsListUseCase;
+     @Inject
+     DialogsManager mDialogsManager;
+     @Inject
+     ViewMvcFactory mViewMvcFactory;
 
      private QuestionsListViewMvc mViewMvc;
 

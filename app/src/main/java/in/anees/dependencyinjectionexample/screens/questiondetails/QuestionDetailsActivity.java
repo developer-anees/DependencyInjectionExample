@@ -4,7 +4,8 @@
  import android.content.Intent;
  import android.os.Bundle;
 
- import in.anees.dependencyinjectionexample.common.dependencyinjection.Service;
+ import javax.inject.Inject;
+
  import in.anees.dependencyinjectionexample.questions.FetchQuestionDetailsUseCase;
  import in.anees.dependencyinjectionexample.questions.QuestionDetails;
  import in.anees.dependencyinjectionexample.screens.common.activities.BaseActivity;
@@ -24,12 +25,12 @@
          context.startActivity(intent);
      }
 
-     @Service
-     private FetchQuestionDetailsUseCase mFetchQuestionDetailsUseCase;
-     @Service
-     private DialogsManager mDialogsManager;
-     @Service
-     private ViewMvcFactory mViewMvcFactory;
+     @Inject
+     FetchQuestionDetailsUseCase mFetchQuestionDetailsUseCase;
+     @Inject
+     DialogsManager mDialogsManager;
+     @Inject
+     ViewMvcFactory mViewMvcFactory;
 
      private String mQuestionId;
 
