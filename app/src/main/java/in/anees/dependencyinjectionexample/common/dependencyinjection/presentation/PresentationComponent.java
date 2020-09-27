@@ -4,7 +4,7 @@ import dagger.Subcomponent;
 import in.anees.dependencyinjectionexample.screens.questiondetails.QuestionDetailsActivity;
 import in.anees.dependencyinjectionexample.screens.questionslist.QuestionsListActivity;
 
-@Subcomponent(modules = PresentationModule.class)
+@Subcomponent(modules = {PresentationModule.class, ViewModelModule.class})
 public interface PresentationComponent {
     void inject(QuestionsListActivity questionsListActivity);
     void inject(QuestionDetailsActivity questionDetailsActivity);

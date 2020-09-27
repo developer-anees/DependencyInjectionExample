@@ -1,6 +1,9 @@
  package in.anees.dependencyinjectionexample.screens.questionslist;
 
  import android.os.Bundle;
+
+ import androidx.lifecycle.ViewModelProvider;
+
  import java.util.List;
 
  import javax.inject.Inject;
@@ -11,6 +14,7 @@
  import in.anees.dependencyinjectionexample.screens.common.dialogs.DialogsManager;
  import in.anees.dependencyinjectionexample.screens.common.dialogs.ServerErrorDialogFragment;
  import in.anees.dependencyinjectionexample.screens.common.mvcviews.ViewMvcFactory;
+ import in.anees.dependencyinjectionexample.screens.common.viewmodel.ViewModelFactory;
  import in.anees.dependencyinjectionexample.screens.questiondetails.QuestionDetailsActivity;
 
  public class QuestionsListActivity extends BaseActivity implements
@@ -24,8 +28,12 @@
      DialogsManager mDialogsManager;
      @Inject
      ViewMvcFactory mViewMvcFactory;
+     @Inject
+     ViewModelFactory viewModelFactory;
 
      private QuestionsListViewMvc mViewMvc;
+
+     private QuestionsListViewModel mQuestionsListViewModel;
 
      @Override
      protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +41,8 @@
          getInjector().inject(this);
 
          mViewMvc = mViewMvcFactory.newInstance(QuestionsListViewMvc.class, null);
+
+         mQuestionsListViewModel = new ViewModelProvider(this, viewModelFactory).get(QuestionsListViewModel.class);
 
          setContentView(mViewMvc.getRootView());
 
@@ -44,7 +54,11 @@
          mViewMvc.registerListener(this);
          mFetchQuestionsListUseCase.registerListener(this);
 
-         mFetchQuestionsListUseCase.fetchLastActiveQuestionsAndNotify(NUM_OF_QUESTIONS_TO_FETCH);
+         if (mQuestionsListViewModel.getQuestions().isEmpty()) {
+             mFetchQuestionsListUseCase.fetchLastActiveQuestionsAndNotify(NUM_OF_QUESTIONS_TO_FETCH);
+         } else {
+             mViewMvc.bindQuestions(mQuestionsListViewModel.getQuestions());
+         }
      }
 
      @Override
@@ -56,6 +70,7 @@
 
      @Override
      public void onFetchOfQuestionsSucceeded(List<Question> questions) {
+         mQuestionsListViewModel.setQuestions(questions);
          mViewMvc.bindQuestions(questions);
      }
 
